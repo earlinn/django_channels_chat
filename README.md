@@ -1,4 +1,5 @@
 # django_channels_chat
+https://habr.com/ru/companies/otus/articles/852510/
 
 ## Памятка по работе с Poetry
 
@@ -16,6 +17,9 @@ poetry config virtualenvs.in-project true , но если ее уже выпол
 Основные команды:
 - Активировать виртуальное окружение: eval $(poetry env activate)
 - Удалить текущее активированное виртуальное окружение: poetry env remove
+- Добавить зависимость: poetry add <название зависимости> (можно указать несколько через пробел)
+- Добавить dev-зависимость: poetry add <название зависимости> --dev (или -D)
+- Удалить зависимость: poetry remove <название зависимости> (можно с флагом -D для dev-зависимостей)
 
 Дока:
 - https://python-poetry.org/docs/
