@@ -18,8 +18,9 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+            const username = data['username'];
             const message = data['message'];
-            document.querySelector('#chat-log').innerHTML += (message + '<br>'); // знаете, почему именно <br>?
+            document.querySelector('#chat-log').innerHTML += (`<strong>${username}:</strong> ${message}<br>`);
         };
 
         chatSocket.onclose = function(e) {
