@@ -3,7 +3,8 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, "chat/index.html")
+    register_error = request.session.pop("register_error", None)
+    return render(request, "chat/index.html", {"register_error": register_error})
 
 
 @login_required

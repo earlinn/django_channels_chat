@@ -5,11 +5,24 @@
 </head>
 <body>
     <h1>Добро пожаловать в чат!</h1>
+
+    {% if user.is_authenticated %}
+        <p>Вы вошли как: <strong>{{ user.username }}</strong></p>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    {% endif %}
+
+    {% if register_error %}
+        <p style="color: red;">{{ register_error }}</p>
+    {% endif %}
     <p>Введите имя комнаты и присоединяйтесь:</p>
     <form method="get" action="">
         <input placeholder="Название комнаты" id="room-name-input" type="text" required>
         <button type="button" id="join-room-button">Войти</button>
     </form>
+    <p>Нет аккаунта? <a href="{% url 'users:register' %}">Зарегистрируйтесь</a></p>
 
     <script>
         document.getElementById('join-room-button').onclick = function() {

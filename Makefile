@@ -22,6 +22,9 @@ superuser-empty:
 shell:
 	cd src; python3 manage.py shell
 
+collectstatic:
+	cd src; python3 manage.py collectstatic --noinput
+
 celery-worker:
 	cd src; python3 -m celery -A config.celery.app worker -l info
 
