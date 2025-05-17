@@ -22,3 +22,16 @@ https://habr.com/ru/companies/otus/articles/852510/
 
 Дока:
 - https://python-poetry.org/docs/
+
+## Другие команды для работы проекта
+
+См. команды в Makefile.
+Можно их копировать и запускать из терминала вручную, а можно через make.
+[Как установить make на Ubuntu](https://www.geeksforgeeks.org/how-to-install-make-on-ubuntu/)
+
+## Пример .env-файла
+```
+SECRET_KEY = <your key>
+REDIS_HOST = localhost
+REDIS_PORT = 6379
+```

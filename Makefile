@@ -24,3 +24,15 @@ shell:
 
 celery-worker:
 	cd src; python3 -m celery -A config.celery.app worker -l info
+
+redis-server:
+	sudo docker run --name redis-server -d -p 6379:6379 redis:latest
+
+redis-server-start:
+	sudo docker start redis-server
+
+redis-server-stop:
+	sudo docker stop redis-server
+
+redis-server-exec:
+	sudo docker exec -it redis-server redis-cli
