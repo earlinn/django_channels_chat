@@ -16,25 +16,63 @@
             '/ws/chat/' + roomName + '/'
         );
 
+        let replyToMessageId = null; // ID сообщения, на которое отвечаем
+
+        // Функция для добавления сообщения в лог
+        function addMessageToLog(username, message, messageId, replyTo = null) {
+            const chatLog = document.querySelector('#chat-log');
+            const messageElement = document.createElement('div');
+            messageElement.setAttribute('data-message-id', messageId);
+        
+            if (replyTo) {
+                const replyElement = document.createElement('div');
+                replyElement.style.marginLeft = '20px';
+                replyElement.innerHTML = `<em>Ответ на сообщение ${replyTo.username}: '${replyTo.message}'</em>`;
+                messageElement.appendChild(replyElement);
+            }
+        
+            messageElement.innerHTML += `<strong>${username}:</strong> ${message} <button onclick="replyTo('${messageId}', '${username}', '${message}')">Ответить</button>`;
+            chatLog.appendChild(messageElement);
+        }
+
+        // Загружаем сообщения из WebSocket
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const username = data['username'];
             const message = data['message'];
-            document.querySelector('#chat-log').innerHTML += (`<strong>${username}:</strong> ${message}<br>`);
+            const messageId = data['message_id'];
+            const replyTo = data['reply_to'];
+
+            addMessageToLog(username, message, messageId, replyTo);
         };
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
+        // Отправка сообщения
         document.querySelector('#chat-message-submit').onclick = function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
+            const messageId = Date.now(); // Генерируем уникальный ID сообщения
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'message_id': messageId,
+                'reply_to': replyToMessageId ? { username: replyToUsername, message: replyToMessage } : null, // Передаём данные о сообщении, на которое отвечаем
             }));
             messageInputDom.value = '';
+            replyToMessageId = null; // Сбрасываем replyTo после отправки
         };
+
+        // Устанавливаем ID сообщения, на которое отвечаем
+        function replyTo(messageId, username, message) {
+            replyToMessageId = messageId;
+            replyToUsername = username;
+            replyToMessage = message;
+            const messageInputDom = document.querySelector('#chat-message-input');
+            messageInputDom.focus();
+            messageInputDom.placeholder = `Ответ на сообщение ${username}: '${message}'`;
+        }
     </script>
 </body>
 </html>
